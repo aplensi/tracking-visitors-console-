@@ -86,14 +86,13 @@ void actionsWithVisitors::event(string s)
 				if (vis.name == name)
 				{
 					vis.startTime = sTime;
-					cout << "     | " << vis.startTime << endl;
+					vis.status = status;
 				}
 			}
 		}
 	}
 	else if (status == 3)
 	{
-
 	}
 }
 
