@@ -81,7 +81,19 @@ void actionsWithVisitors::event(string s)
 		}
 		else {
 			vecTables[idPlace - 1].status = true;
+			for (auto& vis : vecVisitors)
+			{
+				if (vis.name == name)
+				{
+					vis.startTime = sTime;
+					cout << "     | " << vis.startTime << endl;
+				}
+			}
 		}
+	}
+	else if (status == 3)
+	{
+
 	}
 }
 
