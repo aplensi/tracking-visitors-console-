@@ -93,6 +93,32 @@ void actionsWithVisitors::event(string s)
 	}
 	else if (status == 3)
 	{
+		for (auto& pl : vecTables)
+		{
+			if (pl.status == false)
+			{
+				cout << sTime << "13 ICanWaitNoLonger!" << endl;
+				break;
+			}
+		}
+		int countOfExpectations = 0;
+		for (auto& vis : vecVisitors)
+		{
+			if (vis.status == 3) {
+				countOfExpectations += 1;
+			}
+		}
+		if (countOfExpectations > countOfPlaces)
+		{
+			for (auto& vis : vecVisitors)
+			{
+				if (vis.name == name)
+				{
+					vis.status = 4;
+					cout << sTime << " 11 " << vis.name;
+				}
+			}
+		}
 	}
 }
 
