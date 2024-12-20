@@ -73,6 +73,16 @@ void actionsWithVisitors::event(string s)
 		visitor.status = status;
 		vecVisitors.push_back(visitor);
 	}
+	else if (status == 2)
+	{
+		if (vecTables[idPlace - 1].status == true)
+		{
+			cout << sTime << " 13 PlaceIsBusy " << endl;
+		}
+		else {
+			vecTables[idPlace - 1].status = true;
+		}
+	}
 }
 
 bool actionsWithVisitors::isPlace(string s)
@@ -131,11 +141,12 @@ int actionsWithVisitors::hoursToMinuts(string s) {
 	}
 }
 
-void actionsWithVisitors::setPlaces(int)
+void actionsWithVisitors::setPlaces(int count)
 {
-	for (int i = 0; i < countOfPlaces; i++) {
+	for (int i = 0; i < count; i++) {
 		vecTables.push_back({ 0, false });
 	}
+	countOfPlaces = count;
 }
 
 string actionsWithVisitors::minutesToHours(int totalMinutes)

@@ -21,7 +21,7 @@ struct visitors
 struct tables
 {
 	int workTime = 0;
-	bool status = false;
+	bool status;
 };
 
 class actionsWithVisitors
@@ -33,7 +33,6 @@ public:
 	int hoursToMinuts(string);
 	void setPlaces(int);
 	string minutesToHours(int);
-	int countOfPlaces;
 	int price;
 	vector<visitors> vecVisitors;
 private:
@@ -41,6 +40,6 @@ private:
 	string isTime(int startOfTime, string);
 	bool isNumber(const std::string&);
 	int countWords(string);
-	
+	int countOfPlaces;
 	vector<tables> vecTables;
 };
