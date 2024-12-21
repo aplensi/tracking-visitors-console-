@@ -1,9 +1,9 @@
 ﻿#include "tracking-visitors.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 	actionsWithVisitors act;
-	ifstream stream("file.txt");
+	ifstream stream(argv[0]);
 	string str;
 	getline(stream, str);
 	if (!act.isPlace(str))
