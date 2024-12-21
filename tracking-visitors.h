@@ -6,21 +6,22 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
 struct visitors
 {
-	string timeOfEntry;
-	string exitTime;
 	string startTime;
 	string name;
-	int timeUsed, status;
+	int status;
+	int idComputer;
 };
 
 struct tables
 {
 	int workTime = 0;
+	int earned = 0;
 	bool status;
 };
 
@@ -32,11 +33,13 @@ public:
 	bool isOpenTime(string);
 	int hoursToMinuts(string);
 	void setPlaces(int);
+	void kickEveryoneOut();
+	void revenue();
 	string minutesToHours(int);
 	int price;
 	vector<visitors> vecVisitors;
-private:
 	string openTime, closeTime;
+private:
 	string isTime(int startOfTime, string);
 	bool isNumber(const std::string&);
 	int countWords(string);

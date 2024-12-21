@@ -28,17 +28,15 @@ int main()
 	{
 		act.price = atoi(str.c_str());
 	}
-
+	cout << act.openTime << endl;
 	while (getline(stream, str))
 	{
 		//cout << str << endl;
 		act.event(str);
 	}
-	for (const auto& i : act.vecVisitors)
-	{
-		cout << i.name << endl;
-	}
-
+	act.kickEveryoneOut();
+	cout << act.closeTime << endl;
+	act.revenue();
 	return 0;
 }
 
@@ -68,7 +66,6 @@ void actionsWithVisitors::event(string s)
 	if (status == 1)
 	{
 		visitors visitor;
-		visitor.timeOfEntry = sTime;
 		visitor.name = name;
 		visitor.status = status;
 		vecVisitors.push_back(visitor);
@@ -87,17 +84,24 @@ void actionsWithVisitors::event(string s)
 				{
 					vis.startTime = sTime;
 					vis.status = status;
+					vis.idComputer = idPlace;
 				}
 			}
 		}
 	}
 	else if (status == 3)
 	{
+		for (auto& vis : vecVisitors)
+		{
+			if (vis.name == name) {
+				vis.status = 3;
+			}
+		}
 		for (auto& pl : vecTables)
 		{
 			if (pl.status == false)
 			{
-				cout << sTime << "13 ICanWaitNoLonger!" << endl;
+				cout << sTime << " 13 ICanWaitNoLonger!" << endl;
 				break;
 			}
 		}
@@ -116,6 +120,37 @@ void actionsWithVisitors::event(string s)
 				{
 					vis.status = 4;
 					cout << sTime << " 11 " << vis.name;
+				}
+			}
+		}
+	}
+	else if (status == 4)
+	{
+		for (auto& vis : vecVisitors)
+		{
+			if (vis.name == name)
+			{
+				if (vis.status == 4) {
+					cout << sTime << " 13 ClientUnknown" << endl;
+				}
+				else
+				{
+					double commonTime = time - hoursToMinuts(vis.startTime), minutsInHour = 60.0;
+					vis.status = 4;
+					vecTables[vis.idComputer - 1].status = false;
+					vecTables[vis.idComputer - 1].workTime += time - hoursToMinuts(vis.startTime);
+					vecTables[vis.idComputer - 1].earned += ceil(commonTime / minutsInHour) * price;
+					for (auto& vis1 : vecVisitors)
+					{
+						if (vis1.status == 3)
+						{
+							vis1.status = 2;
+							cout << sTime << " 12 " << vis1.name << " " << vis.idComputer << endl;
+							vis1.idComputer = vis.idComputer;
+							vis1.startTime = sTime;
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -184,6 +219,32 @@ void actionsWithVisitors::setPlaces(int count)
 		vecTables.push_back({ 0, false });
 	}
 	countOfPlaces = count;
+}
+
+void actionsWithVisitors::kickEveryoneOut()
+{
+	for (auto& vis : vecVisitors)
+	{
+		if (vis.status == 2)
+		{
+			vis.status = 4;
+			cout << closeTime << " 11 " << vis.name << endl;
+			vecTables[vis.idComputer - 1].workTime += hoursToMinuts(closeTime) - hoursToMinuts(vis.startTime);
+			double commonTime = hoursToMinuts(closeTime) - hoursToMinuts(vis.startTime), minutsInHour = 60.0;
+			vecTables[vis.idComputer - 1].earned += ceil(commonTime / minutsInHour) * price;
+			vecTables[vis.idComputer - 1].status = false;
+		}
+	}
+}
+
+void actionsWithVisitors::revenue()
+{
+	int index = 1;
+	for (auto& pl : vecTables)
+	{
+		cout << index << " " << pl.earned << " " << minutesToHours(pl.workTime) << endl;
+		index += 1;
+	}
 }
 
 string actionsWithVisitors::minutesToHours(int totalMinutes)
