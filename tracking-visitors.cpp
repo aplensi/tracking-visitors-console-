@@ -3,7 +3,11 @@
 int main(int argc, char* argv[])
 {
 	actionsWithVisitors act;
-	ifstream stream(argv[0]);
+	ifstream stream(argv[1]);
+	if (argc < 2) {
+		cout << "File is not open" << endl;
+		return 0;
+	}
 	string str;
 	getline(stream, str);
 	if (!act.isPlace(str))
